@@ -36,12 +36,19 @@ export default function HomeScreen() {
     const pieces = Number(quantity);
     const nextErrors: FormErrors = {};
 
-    if (productName.length < 2 || productName.length > 60 || !/[\p{L}\p{N}]/u.test(productName)) nextErrors.product = 'Escribe un producto de 2 a 60 caracteres.';
-    if (shopName.length < 2 || shopName.length > 60 || !/[\p{L}\p{N}]/u.test(shopName)) nextErrors.shop = 'Escribe un comercio de 2 a 60 caracteres.';
-    if (!/^\d{1,5}(?:\.\d{1,2})?$/.test(original) || was <= 0 || was > 50000) nextErrors.original = 'Usa un precio entre $0.01 y $50,000, con hasta 2 decimales.';
-    if (!/^\d{1,5}(?:\.\d{1,2})?$/.test(discounted) || now <= 0 || now > 50000) nextErrors.discounted = 'Usa un precio entre $0.01 y $50,000, con hasta 2 decimales.';
-    else if (Number.isFinite(was) && was > 0 && now >= was) nextErrors.discounted = 'El precio rebajado debe ser menor al original.';
-    if (!/^\d{1,3}$/.test(quantity) || !Number.isInteger(pieces) || pieces < 1 || pieces > 500) nextErrors.quantity = 'Ingresa una cantidad entera entre 1 y 500.';
+    if (productName.length < 2 || productName.length > 60 || !/[\p{L}\p{N}]/u.test(productName)) nextErrors.product = 'Usa 2–60 caracteres.';
+    if (shopName.length < 2 || shopName.length > 60 || !/[\p{L}\p{N}]/u.test(shopName)) nextErrors.shop = 'Usa 2–60 caracteres.';
+    if (!original) nextErrors.original = 'Precio obligatorio.';
+    else if (!/^\d{1,5}(?:\.\d{1,2})?$/.test(original)) nextErrors.original = 'Máximo 2 decimales.';
+    else if (was <= 0) nextErrors.original = 'Debe ser mayor que $0.';
+    else if (was > 50000) nextErrors.original = 'Máximo: $50,000.';
+    if (!discounted) nextErrors.discounted = 'Precio obligatorio.';
+    else if (!/^\d{1,5}(?:\.\d{1,2})?$/.test(discounted)) nextErrors.discounted = 'Máximo 2 decimales.';
+    else if (now <= 0) nextErrors.discounted = 'Debe ser mayor que $0.';
+    else if (now > 50000) nextErrors.discounted = 'Máximo: $50,000.';
+    else if (Number.isFinite(was) && was > 0 && now >= was) nextErrors.discounted = 'Debe ser menor al original.';
+    if (!quantity) nextErrors.quantity = 'Cantidad obligatoria.';
+    else if (!/^\d{1,3}$/.test(quantity) || !Number.isInteger(pieces) || pieces < 1 || pieces > 500) nextErrors.quantity = 'Usa 1–500 unidades.';
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) return;
 
@@ -62,7 +69,7 @@ export default function HomeScreen() {
         <View style={styles.header}><View><Text style={styles.eyebrow}>MENOS DESPERDICIO · MÁS VALOR LOCAL</Text><Text style={styles.title}>Rescate<Text style={styles.titleAccent}>Local</Text></Text></View><View style={styles.location}><Text style={styles.pin}>⌖</Text><Text style={styles.locationText}>Hermosillo</Text></View></View>
         <View style={styles.hero}><View style={styles.heroTop}><Text style={styles.heroTag}>EXCEDENTES CERCA DE TI</Text><Text style={styles.heroEmoji}>♻️</Text></View><Text style={styles.heroTitle}>Bueno para el{ '\n' }bolsillo y el barrio.</Text><Text style={styles.heroCopy}>Comercios ofrecen alimentos del día con descuento. La comunidad los aprovecha antes de que se desperdicien.</Text><View style={styles.heroStats}><View><Text style={styles.statNumber}>{availableKg.toFixed(1)} kg</Text><Text style={styles.statText}>disponibles hoy</Text></View><View style={styles.statLine} /><View><Text style={styles.statNumber}>{reservations}</Text><Text style={styles.statText}>apartados</Text></View><View style={styles.statLine} /><View><Text style={styles.statNumber}>{money(totalDiscount)}</Text><Text style={styles.statText}>descuento posible</Text></View></View></View>
         <View style={styles.impactCard}><Text style={styles.impactEmoji}>🌱</Text><View style={styles.impactCopy}><Text style={styles.impactTitle}>Una solución económica circular</Text><Text style={styles.impactText}>{rescuedKg.toFixed(1)} kg apartados en esta sesión. El comercio recupera parte del valor y la comunidad accede a comida rebajada.</Text></View></View>
-        <Pressable onPress={() => setPublishOpen(true)} style={styles.publishButton}><Text style={styles.publishPlus}>＋</Text><View style={styles.publishCopy}><Text style={styles.publishTitle}>¿Tienes un comercio?</Text><Text style={styles.publishHint}>Publica un excedente del día</Text></View><Text style={styles.arrow}>›</Text></Pressable>
+        <Pressable onPress={() => { setErrors({}); setPublishOpen(true); }} style={styles.publishButton}><Text style={styles.publishPlus}>＋</Text><View style={styles.publishCopy}><Text style={styles.publishTitle}>¿Tienes un comercio?</Text><Text style={styles.publishHint}>Publica un excedente del día</Text></View><Text style={styles.arrow}>›</Text></Pressable>
         <View style={styles.sectionHeading}><View><Text style={styles.sectionTitle}>Ofertas para rescatar</Text><Text style={styles.muted}>Aparta y recoge directamente en tienda</Text></View><Text style={styles.demoLabel}>DATOS DEMO</Text></View>
         <View style={styles.searchBox}><Text style={styles.searchIcon}>⌕</Text><TextInput accessibilityLabel="Buscar producto, comercio o colonia" value={query} onChangeText={(value) => setQuery(value.replace(/[\r\n\t]/g, '').slice(0, 60))} placeholder="Producto, comercio o colonia" placeholderTextColor="#8A918A" maxLength={60} returnKeyType="search" style={styles.search} /></View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filters}>{CATEGORIES.map((item) => <Pressable key={item} onPress={() => setCategory(item)} style={[styles.filter, category === item && styles.filterActive]}><Text style={[styles.filterText, category === item && styles.filterTextActive]}>{item}</Text></Pressable>)}</ScrollView>
