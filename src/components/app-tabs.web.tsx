@@ -9,6 +9,7 @@ export default function AppTabs() {
         tabBarStyle: { backgroundColor: '#F5F4EE' },
       }}>
       <Tabs.Screen name="index" options={{ title: 'Rescate' }} />
+      <Tabs.Screen name="reservations" options={{ title: 'Apartados' }} />
       <Tabs.Screen name="explore" options={{ title: 'Reloj' }} />
     </Tabs>
   );

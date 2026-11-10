@@ -14,6 +14,7 @@ export type Offer = {
   bestBefore: string;
   emoji: string;
 };
+export type Reservation = { id: string; offer: Offer };
 
 const INITIAL_OFFERS: Offer[] = [
   { id: 'bread', product: 'Paquete de pan dulce', category: 'Panadería', store: 'Panadería Buen Día', neighborhood: 'Centro', originalPrice: 52, price: 26, quantity: 5, kg: 0.8, pickup: 'Hoy · 6 a 8 pm', bestBefore: 'Consumo hoy', emoji: '🥐' },
@@ -25,33 +26,42 @@ const INITIAL_OFFERS: Offer[] = [
 
 type MarketplaceContextValue = {
   offers: Offer[];
+  reservedOffers: Reservation[];
   reservations: number;
   rescuedKg: number;
   reserveOffer: (id: string) => boolean;
+  cancelReservation: (id: string) => void;
   publishOffer: (offer: Omit<Offer, 'id'>) => void;
 };
 const MarketplaceContext = createContext<MarketplaceContextValue | null>(null);
 
 export function WatchProvider({ children }: PropsWithChildren) {
   const [offers, setOffers] = useState(INITIAL_OFFERS);
-  const [reservations, setReservations] = useState(0);
-  const [rescuedKg, setRescuedKg] = useState(0);
+  const [reservedOffers, setReservedOffers] = useState<Reservation[]>([]);
+  const reservations = reservedOffers.length;
+  const rescuedKg = reservedOffers.reduce((sum, reservation) => sum + reservation.offer.kg, 0);
   const value = useMemo(() => ({
     offers,
+    reservedOffers,
     reservations,
     rescuedKg,
     reserveOffer: (id: string) => {
       const offer = offers.find((item) => item.id === id);
       if (!offer || offer.quantity < 1) return false;
       setOffers((current) => current.map((item) => item.id === id ? { ...item, quantity: item.quantity - 1 } : item));
-      setReservations((count) => count + 1);
-      setRescuedKg((kg) => kg + offer.kg);
+      setReservedOffers((current) => [...current, { id: `reservation-${Date.now()}-${current.length}`, offer: { ...offer } }]);
       return true;
+    },
+    cancelReservation: (id: string) => {
+      const reservation = reservedOffers.find((item) => item.id === id);
+      if (!reservation) return;
+      setOffers((current) => current.map((item) => item.id === reservation.offer.id ? { ...item, quantity: item.quantity + 1 } : item));
+      setReservedOffers((current) => current.filter((item) => item.id !== id));
     },
     publishOffer: (offer: Omit<Offer, 'id'>) => {
       setOffers((current) => [{ ...offer, id: `offer-${Date.now()}` }, ...current]);
     },
-  }), [offers, reservations, rescuedKg]);
+  }), [offers, reservedOffers, reservations, rescuedKg]);
   return <MarketplaceContext.Provider value={value}>{children}</MarketplaceContext.Provider>;
 }
 

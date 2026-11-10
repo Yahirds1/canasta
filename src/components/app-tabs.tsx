@@ -16,6 +16,10 @@ export default function AppTabs() {
         <NativeTabs.Trigger.Label>Rescate</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
 
+      <NativeTabs.Trigger name="reservations">
+        <NativeTabs.Trigger.Label>Apartados</NativeTabs.Trigger.Label>
+      </NativeTabs.Trigger>
+
       <NativeTabs.Trigger name="explore">
         <NativeTabs.Trigger.Label>Reloj</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
