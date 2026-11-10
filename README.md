@@ -1,6 +1,6 @@
-# CanastaLista
+# Rescate Local
 
-Prototipo Expo de transparencia de precios de alimentos. Compara productos básicos entre tiendas, calcula cuánto cambia el costo de una canasta y permite compartir precios observados en la comunidad. No registra gastos personales.
+Prototipo Expo de economía circular local. Conecta comercios que tienen excedentes de alimentos al final del día con personas que pueden comprarlos con descuento y recogerlos en tienda. Busca reducir desperdicio, recuperar parte del valor para el comercio y ampliar el acceso a comida rebajada. No registra gastos personales.
 
 ## Ejecutar en Expo Go
 
@@ -10,11 +10,18 @@ Prototipo Expo de transparencia de precios de alimentos. Compara productos bási
 
 El proyecto usa Expo SDK 58. Si Expo Go muestra una incompatibilidad, comprueba que tengas la versión más reciente instalada desde [expo.dev/go](https://expo.dev/go).
 
-## Emulador de smartwatch
+## Demostración
 
-Abre la pestaña **Reloj** para ver la simulación integrada. La hora se actualiza y el aviso refleja el producto seleccionado en Canasta y el precio más bajo reportado. Un precio agregado desde el teléfono actualiza la comparación y el reloj en la misma sesión. También se puede ejecutar aparte el [emulador React de referencia](https://github.com/haxzie/react-smartwatch-emulator).
+- Explora ofertas de ejemplo filtradas por categoría y busca por producto, comercio o colonia.
+- Aparta unidades para recogerlas en tienda; el inventario disponible disminuye y el indicador de impacto se actualiza.
+- Publica un excedente con precio original y rebajado para añadir una oferta durante la sesión.
+- Abre la pestaña **Reloj** para mostrar una oferta con descuento, ubicación y horario de recogida en una simulación de smartwatch.
 
-La vista del reloj es una simulación para mostrar cómo se vería un aviso de precio; todavía no está conectada a un reloj físico ni envía notificaciones reales. Los precios iniciales son ejemplos; los reportes y alertas se guardan solo durante la sesión porque el prototipo aún no usa una base de datos compartida.
+Las ofertas son ficticias. Publicaciones y apartados viven solo en memoria mientras la app está abierta; no hay pagos integrados, backend, validación de comercios ni notificaciones a un reloj físico.
+
+## Emulador externo
+
+El [emulador React de referencia](https://github.com/haxzie/react-smartwatch-emulator) corre como una web independiente. La pestaña Reloj de esta app es una simulación integrada y sus datos no se sincronizan con esa página externa.
 
 ## Comprobaciones
 
