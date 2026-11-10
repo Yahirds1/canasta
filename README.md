@@ -1,6 +1,6 @@
 # CanastaLista
 
-Prototipo Expo para comparar precios de productos de la canasta básica. La app ofrece una vista para teléfono y una pestaña con un reloj de demostración.
+Prototipo Expo de transparencia de precios de alimentos. Compara productos básicos entre tiendas, calcula cuánto cambia el costo de una canasta y permite compartir precios observados en la comunidad. No registra gastos personales.
 
 ## Ejecutar en Expo Go
 
@@ -12,9 +12,9 @@ El proyecto usa Expo SDK 58. Si Expo Go muestra una incompatibilidad, comprueba 
 
 ## Emulador de smartwatch
 
-Abre la pestaña **Reloj** y pulsa **Abrir emulador smartwatch**. El botón abre en el navegador la [demo React del emulador elegido](https://thirsty-davinci-35a9f6.netlify.com/). El código del proyecto original está en [GitHub](https://github.com/haxzie/react-smartwatch-emulator).
+Abre la pestaña **Reloj** para ver la simulación integrada. La hora se actualiza y el aviso refleja el producto seleccionado en Canasta y el precio más bajo reportado. Un precio agregado desde el teléfono actualiza la comparación y el reloj en la misma sesión. También se puede ejecutar aparte el [emulador React de referencia](https://github.com/haxzie/react-smartwatch-emulator).
 
-El emulador enlazado es una app web independiente. La vista dentro de CanastaLista es una simulación para enseñar cómo se vería un aviso de precio; todavía no está conectada a un reloj físico ni envía notificaciones reales. Los precios del prototipo son ejemplos.
+La vista del reloj es una simulación para mostrar cómo se vería un aviso de precio; todavía no está conectada a un reloj físico ni envía notificaciones reales. Los precios iniciales son ejemplos; los reportes y alertas se guardan solo durante la sesión porque el prototipo aún no usa una base de datos compartida.
 
 ## Comprobaciones
 
